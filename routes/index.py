@@ -86,7 +86,7 @@ def add_img():
     u = current_user()
 
     # file 是一个上传的文件对象
-    file = request.files['avatar']
+    file = request.files['file']
     if allow_file(file.filename):
         # 上传的文件一定要用 secure_filename 函数过滤一下名字
         # ../../../../../../../root/.ssh/authorized_keys
