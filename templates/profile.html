@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>profile</title>
+
+    <link rel="stylesheet" href="/static/css/index.min.23a5b1ca.min.css" media="all">
 </head>
 <body>
     <h1>用户资料页面</h1>
@@ -14,8 +16,11 @@
         username:
         {{ user.username }}
     </div>
+    <div class = "user_big_avatar">
+        <img src = "{{user.user_image}} " title = "avatar">
+    </div>
 
-    <h1>上传头像</h1>
+
     <form method=post
           action='{{ url_for(".add_img") }}'
           enctype=multipart/form-data>

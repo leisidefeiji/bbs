@@ -66,9 +66,9 @@ def login():
         return redirect(url_for('topic.index'))
 
 
-@main.route('/profile')
-def profile():
-    u = current_user()
+@main.route('/profile/<username>')
+def profile(username):
+    u = User.find_by(username = username)
     if u is None:
         return redirect(url_for('.index'))
     else:
@@ -97,7 +97,7 @@ def add_img():
         u.user_image = '/uploads/' + filename
         u.save()
 
-    return redirect(url_for(".profile"))
+    return redirect(url_for(".profile",username = u.username))
 
 
 # send_from_directory
