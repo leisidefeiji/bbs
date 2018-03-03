@@ -50,9 +50,11 @@ class User(Model):
 
     @classmethod
     def validate_login(cls, form):
-        u = User.new(form)
-        user = User.find_by(username=u.username)
-        if user is not None and user.password == u.salted_password(u.password):
+        name = form.get('username', '')
+        pwd = form.get('password', '')
+        user = User.find_by(username=name)
+
+        if user is not None and user.password == user.salted_password(pwd):
             return user
         else:
             return None

@@ -43,6 +43,11 @@ def index():
     return render_template("index.html", user=u)
 
 
+@main.route("/login_err")
+def login_err():
+    return render_template("login_err.html")
+
+
 @main.route("/register", methods=['POST'])
 def register():
     form = request.form
@@ -57,7 +62,7 @@ def login():
     u = User.validate_login(form)
     if u is None:
         # 转到 topic.index 页面
-        return redirect(url_for('topic.index'))
+        return redirect(url_for('.login_err'))
     else:
         # session 中写入 user_id
         session['user_id'] = u.id
