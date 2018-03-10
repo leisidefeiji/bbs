@@ -29,16 +29,30 @@ def index():
         ms = Topic.find_all(board_id=board_id)
     token = str(uuid.uuid4())
     u = current_user()
-    csrf_tokens['token'] = u.id
+    if u is not None:
+        csrf_tokens['token'] = u.id
     bs = Board.all()
-    return render_template("topic/index.html", ms=ms, token=token, bs=bs)
+    return render_template("topic/index.html", ms=ms, token=token, bs=bs, current_user = u)
+
+
+@main.route('/search')
+def search():
+    qs = request.args.get('q')
+    print(qs)
+    t = Topic.find_by(title=qs)
+    if t is not None:
+        return render_template("topic/detail.html", topic=t)
+    else:
+        return redirect(url_for('.index'))
+
 
 
 @main.route('/<int:id>')
 def detail(id):
     m = Topic.get(id)
+    u = current_user()
     # 传递 topic 的所有 reply 到 页面中
-    return render_template("topic/detail.html", topic=m)
+    return render_template("topic/detail.html", topic=m, current_user = u)
 
 
 @main.route("/add", methods=["POST"])
