@@ -1,6 +1,6 @@
 import time
 from pymongo import MongoClient
-mongua = MongoClient()
+mongo_client = MongoClient()
 
 
 def timestamp():
@@ -23,7 +23,7 @@ def next_id(name):
         'new': True,
     }
     # 存储数据的 id
-    doc = mongua.db['data_id']
+    doc = mongo_client.db['data_id']
     # find_and_modify 是一个原子操作函数
     new_id = doc.find_and_modify(**kwargs).get('seq')
     return new_id
@@ -137,7 +137,7 @@ class Mongua(object):
         # kwargs['deleted'] = False
         flag_sort = '__sort'
         sort = kwargs.pop(flag_sort, None)
-        ds = mongua.db[name].find(kwargs)
+        ds = mongo_client.db[name].find(kwargs)
         if sort is not None:
             ds = ds.sort(sort)
         l = [cls._new_with_bson(d) for d in ds]
@@ -174,7 +174,7 @@ class Mongua(object):
 
     def save(self):
         name = self.__class__.__name__
-        mongua.db[name].save(self.__dict__)
+        mongo_client.db[name].save(self.__dict__)
 
     def delete(self):
         name = self.__class__.__name__
@@ -184,7 +184,7 @@ class Mongua(object):
         values = {
             'deleted': True
         }
-        mongua.db[name].update_one(query, values)
+        mongo_client.db[name].update_one(query, values)
 
     def blacklist(self):
         b = [
@@ -209,5 +209,5 @@ class Mongua(object):
         query = {
             fk: self.id,
         }
-        count = mongua.db[name]._find(query).count()
+        count = mongo_client.db[name]._find(query).count()
         return count
